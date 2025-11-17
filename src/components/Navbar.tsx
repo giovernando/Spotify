@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, User, Search, Home } from "lucide-react";
+import { Bell, ChevronDown, User, Search, Home, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -54,14 +54,20 @@ export const Navbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center space-x-2 hover:bg-accent">
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=John" />
-                  <AvatarFallback>
-                    <User className="w-4 h-4" />
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-sm font-medium hidden md:block">{user.name}</span>
-                <ChevronDown className="w-4 h-4" />
+                {isLoggedIn ? (
+                  <>
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=John" />
+                      <AvatarFallback>
+                        <User className="w-4 h-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium hidden md:block">{user.name}</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </>
+                ) : (
+                  <LogIn className="w-6 h-6" />
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56 bg-popover border-border">
