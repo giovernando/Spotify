@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Play, MoreHorizontal, Heart, Plus, ListMusic, User, EyeOff } from "lucide-react";
+import { Play, MoreHorizontal, Plus, ListMusic, User, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 interface TrackCardProps {
@@ -15,7 +16,6 @@ interface TrackCardProps {
 
 export const TrackCard = ({ index, title, artist, album, duration, cover }: TrackCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
 
   // Load playlists from localStorage, fallback to mock data
   const [playlists, setPlaylists] = useState([
@@ -30,47 +30,14 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
     if (savedPlaylists) {
       setPlaylists(JSON.parse(savedPlaylists));
     }
-
-    // Check if this track is in favorites
-    const savedFavorites = localStorage.getItem('favorites');
-    if (savedFavorites) {
-      const favorites = JSON.parse(savedFavorites);
-      const trackId = `${title}-${artist}`; // Simple ID generation
-      setIsFavorite(favorites.some((fav: any) => fav.id === trackId));
-    }
-  }, [title, artist]);
+  }, []);
 
   const handleAddToPlaylist = (playlistId: number) => {
     console.log(`Adding "${title}" to playlist ${playlistId}`);
     // TODO: Implement add to playlist logic
   };
 
-  const handleAddToFavorites = () => {
-    const trackId = `${title}-${artist}`;
-    const savedFavorites = localStorage.getItem('favorites');
-    let favorites = savedFavorites ? JSON.parse(savedFavorites) : [];
 
-    if (isFavorite) {
-      // Remove from favorites
-      favorites = favorites.filter((fav: any) => fav.id !== trackId);
-      setIsFavorite(false);
-    } else {
-      // Add to favorites
-      const newFavorite = {
-        id: trackId,
-        index: favorites.length + 1,
-        title,
-        artist,
-        album,
-        duration,
-        cover,
-      };
-      favorites.push(newFavorite);
-      setIsFavorite(true);
-    }
-
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  };
 
   const handleAddToQueue = () => {
     console.log(`Adding "${title}" to queue`);
@@ -111,7 +78,12 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
         )}
         <div className="flex flex-col min-w-0">
           <div className="font-medium text-sm truncate">{title}</div>
-          <div className="text-xs text-muted-foreground truncate">{artist}</div>
+          <Link
+            to={`/artist/${encodeURIComponent(artist)}`}
+            className="text-xs text-muted-foreground truncate hover:text-primary transition-colors"
+          >
+            {artist}
+          </Link>
         </div>
       </div>
 
@@ -121,21 +93,8 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
       {/* Duration */}
       <div className="text-sm text-muted-foreground text-right">{duration}</div>
 
-      {/* Love Button */}
-      <div className={cn("flex justify-end space-x-2", !isHovered && "opacity-0")}>
-        <Button
-          size="icon"
-          variant="ghost"
-          className="h-8 w-8"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddToFavorites();
-          }}
-        >
-          <Heart className={cn("w-4 h-4", isFavorite && "fill-red-500 text-red-500")} />
-        </Button>
-
-        {/* More Options */}
+      {/* More Options */}
+      <div className={cn("flex justify-end", !isHovered && "opacity-0")}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="icon" variant="ghost" className="h-8 w-8">
@@ -160,10 +119,6 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
                 ))}
               </DropdownMenuSubContent>
             </DropdownMenuSub>
-            <DropdownMenuItem onClick={handleAddToFavorites}>
-              <Heart className="mr-2 h-4 w-4" />
-              Tambahkan ke Favorit
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleAddToQueue}>
               <Plus className="mr-2 h-4 w-4" />
               Tambahkan ke Antrean
