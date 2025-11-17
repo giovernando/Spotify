@@ -1,12 +1,37 @@
+import { useState, useEffect } from "react";
 import { Home, Search, Library, Heart, Clock, ListMusic, Plus } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 export const Sidebar = () => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [playlists, setPlaylists] = useState([
+    { id: 1, name: "My Playlist #1" },
+    { id: 2, name: "Chill Vibes" },
+    { id: 3, name: "Workout Mix" },
+    { id: 4, name: "Study Session" },
+  ]);
+
+  // Load playlists from localStorage on mount
+  useEffect(() => {
+    const savedPlaylists = localStorage.getItem('userPlaylists');
+    if (savedPlaylists) {
+      setPlaylists(JSON.parse(savedPlaylists));
+    }
+  }, []);
+
+  // Save playlists to localStorage whenever playlists change
+  useEffect(() => {
+    localStorage.setItem('userPlaylists', JSON.stringify(playlists));
+  }, [playlists]);
 
   const mainMenu = [
     { icon: Home, label: "Beranda", path: "/" },
@@ -19,12 +44,17 @@ export const Sidebar = () => {
     { icon: Clock, label: "Sering Diputar", path: "/collection/recent" },
   ];
 
-  const playlists = [
-    { id: 1, name: "My Playlist #1" },
-    { id: 2, name: "Chill Vibes" },
-    { id: 3, name: "Workout Mix" },
-    { id: 4, name: "Study Session" },
-  ];
+  const handleCreatePlaylist = () => {
+    if (newPlaylistName.trim()) {
+      const newPlaylist = {
+        id: playlists.length + 1,
+        name: newPlaylistName.trim(),
+      };
+      setPlaylists([...playlists, newPlaylist]);
+      setNewPlaylistName("");
+      setIsDialogOpen(false);
+    }
+  };
 
   return (
     <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-full">
@@ -77,9 +107,42 @@ export const Sidebar = () => {
           <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Playlist
           </h3>
-          <Button size="icon" variant="ghost" className="h-6 w-6">
-            <Plus className="h-4 w-4" />
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button size="icon" variant="ghost" className="h-6 w-6">
+                <Plus className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Buat Playlist Baru</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-7">
+                <div>
+                  <Label htmlFor="playlist-name">Nama Playlist</Label>
+                  <Input
+                    id="playlist-name"
+                    value={newPlaylistName}
+                    onChange={(e) => setNewPlaylistName(e.target.value)}
+                    placeholder="Masukkan nama playlist..."
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleCreatePlaylist();
+                      }
+                    }}
+                  />
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                    Batal
+                  </Button>
+                  <Button onClick={handleCreatePlaylist} disabled={!newPlaylistName.trim()}>
+                    Buat
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="space-y-2">
           {playlists.map((playlist) => (
@@ -91,7 +154,7 @@ export const Sidebar = () => {
                   isActive(`/playlist/${playlist.id}`) && "bg-sidebar-accent text-sidebar-primary"
                 )}
               >
-                <ListMusic className="mr-3 h-5 w-5 flex-shrink-0" />
+                <ListMusic className="mr-4 h-5 w-5 flex-shrink-0" />
                 <span className="truncate">{playlist.name}</span>
               </Button>
             </Link>
