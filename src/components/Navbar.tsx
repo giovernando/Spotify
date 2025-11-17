@@ -12,7 +12,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { NotificationDropdown } from "./NotificationDropdown";
 
-export const Navbar = () => {
+interface NavbarProps {
+  selectedTab?: string;
+  setSelectedTab?: (tab: string) => void;
+}
+
+export const Navbar = ({ selectedTab, setSelectedTab }: NavbarProps) => {
   // Get user data from localStorage or use default
   const getUserData = () => {
     const savedUser = localStorage.getItem('user');
@@ -27,29 +32,9 @@ export const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
-      <div className="flex items-center justify-between h-16 px-6">
-        {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <Home className="w-8 h-8 text-white" />
-        </Link>
-
-        {/* Search */}
-        <div className="flex-1 max-w-md mx-4 md:mx-8">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
-              type="text"
-              placeholder="Cari lagu, artis, atau album..."
-              className="pl-10 bg-muted/50 border-0 focus:bg-background hidden md:block"
-            />
-          </div>
-        </div>
-
-        {/* Right section */}
+      <div className="flex items-center justify-between h-16 px-4 md:px-6">
+        {/* Left section - Profile and Tabs */}
         <div className="flex items-center space-x-4">
-          {/* Notifications */}
-          <NotificationDropdown />
-
           {/* Profile Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -99,6 +84,47 @@ export const Navbar = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {/* Tabs - Only show on mobile */}
+          {setSelectedTab && (
+            <div className="md:hidden flex space-x-2">
+              <button
+                onClick={() => setSelectedTab("all")}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  selectedTab === "all"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                Semua
+              </button>
+              <button
+                onClick={() => setSelectedTab("music")}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  selectedTab === "music"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                Musik
+              </button>
+              <button
+                onClick={() => setSelectedTab("podcast")}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  selectedTab === "podcast"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                Podcast
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Right section - Notifications */}
+        <div className="flex items-center">
+          <NotificationDropdown />
         </div>
       </div>
     </nav>

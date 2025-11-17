@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { PlaylistCard } from "@/components/PlaylistCard";
 import { TrackCard } from "@/components/TrackCard";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 
 interface HomeProps {
   currentTrack: {
@@ -203,13 +204,13 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
         <Sidebar />
       </div>
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Navbar />
-        <main className="flex-1 overflow-y-auto pb-20 md:pb-24">
+        <Navbar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+        <main className="flex-1 overflow-y-auto pb-32 md:pb-24">
           <div className="p-4 md:p-6">
             {/* Header */}
             <div className="mb-4 md:mb-6">
               <h1 className="text-2xl md:text-3xl font-bold mb-4">Dibuat untuk {userName}</h1>
-              <div className="flex space-x-2 overflow-x-auto">
+              <div className="hidden md:flex space-x-2 overflow-x-auto">
                 <button
                   onClick={() => setSelectedTab("all")}
                   className={`px-3 md:px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
@@ -326,6 +327,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
           </div>
         </main>
         <MusicPlayer currentTrack={currentTrack} />
+        <MobileBottomNav />
       </div>
     </div>
   );
