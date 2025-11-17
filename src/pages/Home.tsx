@@ -247,7 +247,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                 <h2 className="text-2xl font-bold mb-4">Baru Diputar</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {recentlyPlayed.map((item) => (
-                    <PlaylistCard key={item.id} {...item} />
+                    <PlaylistCard key={item.id} {...item} setCurrentTrack={setCurrentTrack} />
                   ))}
                 </div>
               </section>
@@ -259,7 +259,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                 <h2 className="text-2xl font-bold mb-4">Musik Populer</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {popularMusic.map((item) => (
-                    <PlaylistCard key={item.id} {...item} />
+                    <PlaylistCard key={item.id} {...item} setCurrentTrack={setCurrentTrack} />
                   ))}
                 </div>
               </section>
@@ -271,7 +271,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                 <h2 className="text-2xl font-bold mb-4">Podcast Populer</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {popularPodcasts.map((item) => (
-                    <PlaylistCard key={item.id} {...item} />
+                    <PlaylistCard key={item.id} {...item} setCurrentTrack={setCurrentTrack} />
                   ))}
                 </div>
               </section>
@@ -283,7 +283,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                 <h2 className="text-2xl font-bold mb-4">Podcast Baru Diputar</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {recentlyPlayedPodcasts.map((item) => (
-                    <PlaylistCard key={item.id} {...item} />
+                    <PlaylistCard key={item.id} {...item} setCurrentTrack={setCurrentTrack} />
                   ))}
                 </div>
               </section>
@@ -295,7 +295,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                 <h2 className="text-2xl font-bold mb-4">Rekomendasi untuk Anda</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {recentlyPlayed.map((item) => (
-                    <PlaylistCard key={item.id} {...item} />
+                    <PlaylistCard key={item.id} {...item} setCurrentTrack={setCurrentTrack} />
                   ))}
                 </div>
               </section>

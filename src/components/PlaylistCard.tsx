@@ -8,9 +8,10 @@ interface PlaylistCardProps {
   title: string;
   description: string;
   cover: string;
+  setCurrentTrack?: (track: { title: string; artist: string; cover: string }) => void;
 }
 
-export const PlaylistCard = ({ id, title, description, cover }: PlaylistCardProps) => {
+export const PlaylistCard = ({ id, title, description, cover, setCurrentTrack }: PlaylistCardProps) => {
   return (
     <Link to={`/playlist/${id}`}>
       <Card className="group bg-card hover:bg-accent transition-all duration-300 border-0 cursor-pointer">
@@ -24,6 +25,17 @@ export const PlaylistCard = ({ id, title, description, cover }: PlaylistCardProp
             <Button
               size="icon"
               className="absolute bottom-2 right-2 h-12 w-12 rounded-full bg-primary hover:bg-primary/90 shadow-xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (setCurrentTrack) {
+                  setCurrentTrack({
+                    title: title,
+                    artist: "Various Artists",
+                    cover: cover,
+                  });
+                }
+              }}
             >
               <Play className="w-5 h-5 fill-current ml-0.5" />
             </Button>
