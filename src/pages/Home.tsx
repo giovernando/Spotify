@@ -199,18 +199,20 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar />
+      <div className="hidden md:block">
+        <Sidebar />
+      </div>
       <div className="flex-1 flex flex-col overflow-hidden">
         <Navbar />
-        <main className="flex-1 overflow-y-auto pb-24">
-          <div className="p-6">
+        <main className="flex-1 overflow-y-auto pb-20 md:pb-24">
+          <div className="p-4 md:p-6">
             {/* Header */}
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-4">Dibuat untuk {userName}</h1>
-              <div className="flex space-x-2">
+            <div className="mb-4 md:mb-6">
+              <h1 className="text-2xl md:text-3xl font-bold mb-4">Dibuat untuk {userName}</h1>
+              <div className="flex space-x-2 overflow-x-auto">
                 <button
                   onClick={() => setSelectedTab("all")}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-3 md:px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
                     selectedTab === "all"
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
@@ -220,7 +222,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                 </button>
                 <button
                   onClick={() => setSelectedTab("music")}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-3 md:px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
                     selectedTab === "music"
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
@@ -230,7 +232,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                 </button>
                 <button
                   onClick={() => setSelectedTab("podcast")}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-3 md:px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
                     selectedTab === "podcast"
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/80"

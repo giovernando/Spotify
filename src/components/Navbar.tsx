@@ -34,13 +34,13 @@ export const Navbar = () => {
         </Link>
 
         {/* Search */}
-        <div className="flex-1 max-w-md mx-8">
+        <div className="flex-1 max-w-md mx-4 md:mx-8">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               type="text"
               placeholder="Cari lagu, artis, atau album..."
-              className="pl-10 bg-muted/50 border-0 focus:bg-background"
+              className="pl-10 bg-muted/50 border-0 focus:bg-background hidden md:block"
             />
           </div>
         </div>

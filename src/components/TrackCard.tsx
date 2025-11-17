@@ -125,7 +125,7 @@ export const TrackCard = ({ index, title, artist, album, duration, cover, setCur
 
   return (
     <div
-      className="grid grid-cols-[80px_1fr_1fr_100px_80px] gap-4 items-center py-2 px-4 rounded hover:bg-accent group transition-colors cursor-pointer"
+      className="grid grid-cols-[60px_1fr_1fr_80px_60px] md:grid-cols-[80px_1fr_1fr_100px_80px] gap-2 md:gap-4 items-center py-2 px-2 md:px-4 rounded hover:bg-accent group transition-colors cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

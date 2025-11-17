@@ -21,15 +21,15 @@ export const MusicPlayer = ({ currentTrack }: MusicPlayerProps) => {
   const [volume, setVolume] = useState([70]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border h-24 px-4 flex items-center justify-between z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border h-20 md:h-24 px-2 md:px-4 flex items-center justify-between z-50">
       {/* Track Info */}
-      <div className="flex items-center space-x-4 w-1/4">
+      <div className="flex items-center space-x-2 md:space-x-4 w-1/4 min-w-0">
         <img
           src={currentTrack.cover}
           alt={currentTrack.title}
-          className="w-14 h-14 rounded object-cover"
+          className="w-12 h-12 md:w-14 md:h-14 rounded object-cover"
         />
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 hidden md:block">
           <div className="font-medium text-sm truncate">{currentTrack.title}</div>
           <div className="text-xs text-muted-foreground truncate">{currentTrack.artist}</div>
         </div>
@@ -37,7 +37,7 @@ export const MusicPlayer = ({ currentTrack }: MusicPlayerProps) => {
 
       {/* Player Controls */}
       <div className="flex flex-col items-center w-2/4 max-w-2xl">
-        <div className="flex items-center space-x-4 mb-2">
+        <div className="flex items-center space-x-1 md:space-x-4 mb-1 md:mb-2">
           <Button
             size="icon"
             variant="ghost"
@@ -55,17 +55,17 @@ export const MusicPlayer = ({ currentTrack }: MusicPlayerProps) => {
             <Shuffle className="w-4 h-4" />
           </Button>
           <Button size="icon" variant="ghost" className="hover:bg-accent">
-            <SkipBack className="w-5 h-5" />
+            <SkipBack className="w-4 h-4 md:w-5 md:h-5" />
           </Button>
           <Button
             size="icon"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground w-10 h-10 rounded-full"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground w-8 h-8 md:w-10 md:h-10 rounded-full"
             onClick={() => setIsPlaying(!isPlaying)}
           >
-            {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
+            {isPlaying ? <Pause className="w-4 h-4 md:w-5 md:h-5" /> : <Play className="w-4 h-4 md:w-5 md:h-5 ml-0.5" />}
           </Button>
           <Button size="icon" variant="ghost" className="hover:bg-accent">
-            <SkipForward className="w-5 h-5" />
+            <SkipForward className="w-4 h-4 md:w-5 md:h-5" />
           </Button>
           <Button
             size="icon"
@@ -78,7 +78,7 @@ export const MusicPlayer = ({ currentTrack }: MusicPlayerProps) => {
         </div>
         {/* Progress Bar */}
         <div className="w-full flex items-center space-x-2">
-          <span className="text-xs text-muted-foreground w-10 text-right">1:32</span>
+          <span className="text-xs text-muted-foreground w-8 md:w-10 text-right">1:32</span>
           <Slider
             value={progress}
             onValueChange={setProgress}
@@ -86,14 +86,14 @@ export const MusicPlayer = ({ currentTrack }: MusicPlayerProps) => {
             step={1}
             className="flex-1"
           />
-          <span className="text-xs text-muted-foreground w-10">3:45</span>
+          <span className="text-xs text-muted-foreground w-8 md:w-10">3:45</span>
         </div>
       </div>
 
       {/* Volume Control */}
       <div className="flex items-center space-x-2 w-1/4 justify-end">
-        <Volume2 className="w-5 h-5 text-muted-foreground" />
-        <Slider value={volume} onValueChange={setVolume} max={100} step={1} className="w-24" />
+        <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
+        <Slider value={volume} onValueChange={setVolume} max={100} step={1} className="w-16 md:w-24" />
       </div>
     </div>
   );
