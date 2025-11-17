@@ -90,8 +90,17 @@ const Playlist = ({ currentTrack, setCurrentTrack }: PlaylistProps) => {
               <div className="text-right">DURASI</div>
               <div></div>
             </div>
-            {tracks.map((track) => (
-              <TrackCard key={track.index} {...track} />
+            {tracks.map((track, index) => (
+              <TrackCard
+                key={track.id}
+                index={index + 1}
+                title={track.title}
+                artist={track.artist}
+                album={track.album}
+                duration={track.duration}
+                cover={track.cover}
+                setCurrentTrack={setCurrentTrack}
+              />
             ))}
           </div>
         </main>

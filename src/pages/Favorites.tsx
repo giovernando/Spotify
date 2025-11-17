@@ -84,6 +84,7 @@ const Favorites = ({ currentTrack, setCurrentTrack }: FavoritesProps) => {
                     album={track.album}
                     duration={track.duration}
                     cover={track.cover}
+                    setCurrentTrack={setCurrentTrack}
                   />
                 ))}
               </div>

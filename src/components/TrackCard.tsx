@@ -12,9 +12,10 @@ interface TrackCardProps {
   album: string;
   duration: string;
   cover?: string;
+  setCurrentTrack?: (track: { title: string; artist: string; cover: string }) => void;
 }
 
-export const TrackCard = ({ index, title, artist, album, duration, cover }: TrackCardProps) => {
+export const TrackCard = ({ index, title, artist, album, duration, cover, setCurrentTrack }: TrackCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   // Load playlists from localStorage, fallback to mock data
@@ -24,6 +25,8 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
     { id: 3, name: "Workout Mix" },
     { id: 4, name: "Study Session" },
   ]);
+
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const savedPlaylists = localStorage.getItem('userPlaylists');
@@ -43,6 +46,12 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const trackId = `${title}-${artist}`;
+    setIsFavorite(favorites.some((fav: any) => fav.id === trackId));
+  }, [title, artist]);
 
   const handleAddToPlaylist = (playlistId: number) => {
     const playlistTracks = JSON.parse(localStorage.getItem(`playlist_${playlistId}`) || '[]');
@@ -79,8 +88,14 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
   };
 
   const handlePlayTrack = () => {
+    if (setCurrentTrack) {
+      setCurrentTrack({
+        title,
+        artist,
+        cover: cover || "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop",
+      });
+    }
     console.log(`Playing track "${title}" by ${artist}`);
-    // TODO: Implement play track logic
   };
 
   const handleAddToFavorites = () => {
@@ -95,13 +110,16 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
       cover,
     };
 
-    const isAlreadyFavorite = favorites.some((fav: any) => fav.id === trackData.id);
-    if (!isAlreadyFavorite) {
+    if (!isFavorite) {
       favorites.push(trackData);
       localStorage.setItem('favorites', JSON.stringify(favorites));
+      setIsFavorite(true);
       console.log(`Added "${title}" to favorites`);
     } else {
-      console.log(`"${title}" is already in favorites`);
+      const updatedFavorites = favorites.filter((fav: any) => fav.id !== trackData.id);
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      setIsFavorite(false);
+      console.log(`Removed "${title}" from favorites`);
     }
   };
 
@@ -172,7 +190,7 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
             </DropdownMenuSub>
             <DropdownMenuItem onClick={handleAddToFavorites}>
               <Heart className="mr-2 h-4 w-4" />
-              Tambahkan ke Favorit
+              {isFavorite ? "Hapus dari Favorit" : "Tambahkan ke Favorit"}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleAddToQueue}>
               <Plus className="mr-2 h-4 w-4" />

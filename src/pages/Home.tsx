@@ -315,6 +315,7 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                       album={track.album}
                       duration={track.duration}
                       cover={track.cover}
+                      setCurrentTrack={setCurrentTrack}
                     />
                   ))}
                 </div>
