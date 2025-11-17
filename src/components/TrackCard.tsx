@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Play, MoreHorizontal } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Play, MoreHorizontal, Heart, Plus, ListMusic, User, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 interface TrackCardProps {
@@ -14,6 +15,46 @@ interface TrackCardProps {
 
 export const TrackCard = ({ index, title, artist, album, duration, cover }: TrackCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  // Load playlists from localStorage, fallback to mock data
+  const [playlists, setPlaylists] = useState([
+    { id: 1, name: "My Playlist #1" },
+    { id: 2, name: "Chill Vibes" },
+    { id: 3, name: "Workout Mix" },
+    { id: 4, name: "Study Session" },
+  ]);
+
+  useEffect(() => {
+    const savedPlaylists = localStorage.getItem('userPlaylists');
+    if (savedPlaylists) {
+      setPlaylists(JSON.parse(savedPlaylists));
+    }
+  }, []);
+
+  const handleAddToPlaylist = (playlistId: number) => {
+    console.log(`Adding "${title}" to playlist ${playlistId}`);
+    // TODO: Implement add to playlist logic
+  };
+
+  const handleAddToFavorites = () => {
+    console.log(`Adding "${title}" to favorites`);
+    // TODO: Implement add to favorites logic
+  };
+
+  const handleAddToQueue = () => {
+    console.log(`Adding "${title}" to queue`);
+    // TODO: Implement add to queue logic
+  };
+
+  const handleHideSong = () => {
+    console.log(`Hiding song "${title}"`);
+    // TODO: Implement hide song logic
+  };
+
+  const handleOpenArtist = () => {
+    console.log(`Opening artist page for "${artist}"`);
+    // TODO: Implement open artist logic
+  };
 
   return (
     <div
@@ -51,9 +92,49 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
 
       {/* More Options */}
       <div className={cn("flex justify-end", !isHovered && "opacity-0")}>
-        <Button size="icon" variant="ghost" className="h-8 w-8">
-          <MoreHorizontal className="w-4 h-4" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="icon" variant="ghost" className="h-8 w-8">
+              <MoreHorizontal className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <Plus className="mr-2 h-4 w-4" />
+                Tambahkan ke Playlist
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                {playlists.map((playlist) => (
+                  <DropdownMenuItem
+                    key={playlist.id}
+                    onClick={() => handleAddToPlaylist(playlist.id)}
+                  >
+                    <ListMusic className="mr-2 h-4 w-4" />
+                    {playlist.name}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuItem onClick={handleAddToFavorites}>
+              <Heart className="mr-2 h-4 w-4" />
+              Tambahkan ke Favorit
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleAddToQueue}>
+              <Plus className="mr-2 h-4 w-4" />
+              Tambahkan ke Antrean
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleHideSong}>
+              <EyeOff className="mr-2 h-4 w-4" />
+              Sembunyikan Lagu
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleOpenArtist}>
+              <User className="mr-2 h-4 w-4" />
+              Buka Artis
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
