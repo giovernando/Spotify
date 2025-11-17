@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Sidebar } from "@/components/Sidebar";
 import { MusicPlayer } from "@/components/MusicPlayer";
@@ -17,57 +18,31 @@ interface PlaylistProps {
 
 const Playlist = ({ currentTrack, setCurrentTrack }: PlaylistProps) => {
   const { id } = useParams();
+  const [tracks, setTracks] = useState([]);
+
+  useEffect(() => {
+    const savedTracks = localStorage.getItem(`playlist_${id}`);
+    if (savedTracks) {
+      setTracks(JSON.parse(savedTracks));
+    }
+  }, [id]);
+
+  const [playlists, setPlaylists] = useState([]);
+
+  useEffect(() => {
+    const savedPlaylists = localStorage.getItem('userPlaylists');
+    if (savedPlaylists) {
+      setPlaylists(JSON.parse(savedPlaylists));
+    }
+  }, []);
 
   const playlist = {
-    title: "My Playlist #1",
+    title: playlists.find(p => p.id === parseInt(id || '0'))?.name || "My Playlist",
     description: "Your favorite songs collection",
     cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop",
-    totalTracks: 25,
+    totalTracks: tracks.length,
     totalDuration: "1 hr 23 min",
   };
-
-  const tracks = [
-    {
-      index: 1,
-      title: "Bohemian Rhapsody",
-      artist: "Queen",
-      album: "A Night at the Opera",
-      duration: "5:55",
-      cover: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=50&h=50&fit=crop",
-    },
-    {
-      index: 2,
-      title: "Hey Jude",
-      artist: "The Beatles",
-      album: "Hey Jude",
-      duration: "7:09",
-      cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=50&h=50&fit=crop",
-    },
-    {
-      index: 3,
-      title: "Stairway to Heaven",
-      artist: "Led Zeppelin",
-      album: "Led Zeppelin IV",
-      duration: "8:02",
-      cover: "https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=50&h=50&fit=crop",
-    },
-    {
-      index: 4,
-      title: "Hotel California",
-      artist: "Eagles",
-      album: "Hotel California",
-      duration: "6:30",
-      cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=50&h=50&fit=crop",
-    },
-    {
-      index: 5,
-      title: "Comfortably Numb",
-      artist: "Pink Floyd",
-      album: "The Wall",
-      duration: "6:23",
-      cover: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=50&h=50&fit=crop",
-    },
-  ];
 
   return (
     <div className="flex h-screen overflow-hidden">

@@ -3,6 +3,7 @@ import { Navbar } from "@/components/Navbar";
 import { Sidebar } from "@/components/Sidebar";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { PlaylistCard } from "@/components/PlaylistCard";
+import { TrackCard } from "@/components/TrackCard";
 
 interface HomeProps {
   currentTrack: {
@@ -113,6 +114,89 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
     },
   ];
 
+  const tracks = [
+    {
+      index: 1,
+      title: "Bohemian Rhapsody",
+      artist: "Queen",
+      album: "A Night at the Opera",
+      duration: "5:55",
+      cover: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=50&h=50&fit=crop",
+    },
+    {
+      index: 2,
+      title: "Hey Jude",
+      artist: "The Beatles",
+      album: "Hey Jude",
+      duration: "7:09",
+      cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=50&h=50&fit=crop",
+    },
+    {
+      index: 3,
+      title: "Stairway to Heaven",
+      artist: "Led Zeppelin",
+      album: "Led Zeppelin IV",
+      duration: "8:02",
+      cover: "https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=50&h=50&fit=crop",
+    },
+    {
+      index: 4,
+      title: "Hotel California",
+      artist: "Eagles",
+      album: "Hotel California",
+      duration: "6:30",
+      cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=50&h=50&fit=crop",
+    },
+    {
+      index: 5,
+      title: "Comfortably Numb",
+      artist: "Pink Floyd",
+      album: "The Wall",
+      duration: "6:23",
+      cover: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=50&h=50&fit=crop",
+    },
+    {
+      index: 6,
+      title: "Imagine",
+      artist: "John Lennon",
+      album: "Imagine",
+      duration: "3:03",
+      cover: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=50&h=50&fit=crop",
+    },
+    {
+      index: 7,
+      title: "Billie Jean",
+      artist: "Michael Jackson",
+      album: "Thriller",
+      duration: "4:54",
+      cover: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=50&h=50&fit=crop",
+    },
+    {
+      index: 8,
+      title: "Smells Like Teen Spirit",
+      artist: "Nirvana",
+      album: "Nevermind",
+      duration: "5:01",
+      cover: "https://images.unsplash.com/photo-1589903308904-1010c2294adc?w=50&h=50&fit=crop",
+    },
+    {
+      index: 9,
+      title: "Wonderwall",
+      artist: "Oasis",
+      album: "What's the Story Morning Glory?",
+      duration: "4:18",
+      cover: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop",
+    },
+    {
+      index: 10,
+      title: "Shape of You",
+      artist: "Ed Sheeran",
+      album: "÷ (Divide)",
+      duration: "3:53",
+      cover: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=50&h=50&fit=crop",
+    },
+  ];
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
@@ -212,6 +296,26 @@ const Home = ({ currentTrack, setCurrentTrack }: HomeProps) => {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {recentlyPlayed.map((item) => (
                     <PlaylistCard key={item.id} {...item} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Popular Tracks */}
+            {(selectedTab === "all" || selectedTab === "music") && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold mb-4">Lagu Populer</h2>
+                <div className="space-y-1">
+                  {tracks.map((track) => (
+                    <TrackCard
+                      key={track.index}
+                      index={track.index}
+                      title={track.title}
+                      artist={track.artist}
+                      album={track.album}
+                      duration={track.duration}
+                      cover={track.cover}
+                    />
                   ))}
                 </div>
               </section>

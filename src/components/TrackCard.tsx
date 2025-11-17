@@ -32,9 +32,38 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
     }
   }, []);
 
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedPlaylists = localStorage.getItem('userPlaylists');
+      if (savedPlaylists) {
+        setPlaylists(JSON.parse(savedPlaylists));
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const handleAddToPlaylist = (playlistId: number) => {
-    console.log(`Adding "${title}" to playlist ${playlistId}`);
-    // TODO: Implement add to playlist logic
+    const playlistTracks = JSON.parse(localStorage.getItem(`playlist_${playlistId}`) || '[]');
+    const trackData = {
+      id: `${title}-${artist}`,
+      index: playlistTracks.length + 1,
+      title,
+      artist,
+      album,
+      duration,
+      cover,
+    };
+
+    const isAlreadyInPlaylist = playlistTracks.some((track: any) => track.id === trackData.id);
+    if (!isAlreadyInPlaylist) {
+      playlistTracks.push(trackData);
+      localStorage.setItem(`playlist_${playlistId}`, JSON.stringify(playlistTracks));
+      console.log(`Added "${title}" to playlist ${playlistId}`);
+    } else {
+      console.log(`"${title}" is already in playlist ${playlistId}`);
+    }
   };
 
 
