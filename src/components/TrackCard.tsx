@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Play, MoreHorizontal, Plus, ListMusic, EyeOff } from "lucide-react";
+import { Play, MoreHorizontal, Plus, ListMusic, EyeOff, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
@@ -52,6 +52,28 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
   const handlePlayTrack = () => {
     console.log(`Playing track "${title}" by ${artist}`);
     // TODO: Implement play track logic
+  };
+
+  const handleAddToFavorites = () => {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const trackData = {
+      id: `${title}-${artist}`,
+      index: index,
+      title,
+      artist,
+      album,
+      duration,
+      cover,
+    };
+
+    const isAlreadyFavorite = favorites.some((fav: any) => fav.id === trackData.id);
+    if (!isAlreadyFavorite) {
+      favorites.push(trackData);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      console.log(`Added "${title}" to favorites`);
+    } else {
+      console.log(`"${title}" is already in favorites`);
+    }
   };
 
   return (
@@ -119,6 +141,10 @@ export const TrackCard = ({ index, title, artist, album, duration, cover }: Trac
                 ))}
               </DropdownMenuSubContent>
             </DropdownMenuSub>
+            <DropdownMenuItem onClick={handleAddToFavorites}>
+              <Heart className="mr-2 h-4 w-4" />
+              Tambahkan ke Favorit
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleAddToQueue}>
               <Plus className="mr-2 h-4 w-4" />
               Tambahkan ke Antrean

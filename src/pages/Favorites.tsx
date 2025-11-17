@@ -34,6 +34,18 @@ const Favorites = ({ currentTrack, setCurrentTrack }: FavoritesProps) => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedFavorites = localStorage.getItem("favorites");
+      if (savedFavorites) {
+        setFavorites(JSON.parse(savedFavorites));
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const removeFromFavorites = (trackId: string) => {
     const updatedFavorites = favorites.filter(track => track.id !== trackId);
     setFavorites(updatedFavorites);
